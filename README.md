@@ -42,6 +42,7 @@ $ apt-get update
 $ apt-get upgrade  
 $ apt-get install nginx  
 $ /var/www/aselva/bin/python3.9 -m pip install --upgrade pip  
+$ pip install RPi.GPIO  
 $ pip install flask  
 $ pip install flask-socketio  
 $ vim hello.py  
@@ -77,3 +78,41 @@ $ cd ~
 $ nano /etc/ssh/sshd_config
   PermitRootLogin yes
 $ /etc/init.d/ssh restart
+
+# Init uWSGI
+$ bin/uwsgi --ini /var/www/aselva/aselva_uwsgi.ini  
+
+# Redirect NGINX conf file
+$ rm /etc/nginx/sites-enabled/default
+$ ln -s /var/www/aselva/aselva_nginx.conf /etc/nginx/conf.d/
+$ ls -al /etc/nginx/conf.d/  
+$ /etc/init.d/nginx restart
+
+# Automate with SystemD
+$ vim /etc/systemd/system/emperor.uwsgi.service
+# paste into the file
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+ExecStart=/var/www/aselva/bin/uwsgi --ini /var/www/aselva/aselva_uwsgi.ini
+# Requires systemd version 211 or newer
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+# save and quit typing :wq 
+$ systemctl start emperor.uwsgi.service  
+$ systemctl status emperor.uwsgi.service  
+$ systemctl enable emperor.uwsgi.service  
+  
+# Install RGB Sensor library
+$ git clone https://github.com/adafruit/Adafruit_CircuitPython_DHT  
+$ cd Adafruit_CircuitPython_DHT  
+~/Adafruit_CircuitPython_DHT $ python3 setup.py install  
