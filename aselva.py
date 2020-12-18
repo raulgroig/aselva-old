@@ -13,6 +13,7 @@ executor = ThreadPoolExecutor(1)
 app = Flask(__name__)
 app.debug = True # Make this False if you are no longer debugging
 socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 
 pinLDR 	= 14 #8
 pinLedR = 17 #11
