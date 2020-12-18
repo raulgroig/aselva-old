@@ -19,7 +19,7 @@ pinLDR 	= 14 #8
 pinLedR = 17 #11
 pinLedG = 27 #13
 pinLedB = 22 #15
-pinLedW = 18 #12
+pinLedY = 18 #12
 
 # Initialize I2C bus and sensor.
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -35,7 +35,7 @@ def index():
 
 def rgb_sensor_data():
 	while True:
-		valueColor	= 0 # 0 = null, 1 = red, 2 = green, 3 = blue, 4 = white
+		valueColor	= 0 # 0 = null, 1 = red, 2 = green, 3 = blue, 4 = yellow
 		GPIO.setmode(GPIO.BCM)
 		if (rc_time(pinLDR) > 10000):
 			valueRGB = sensor.color_rgb_bytes
@@ -50,7 +50,7 @@ def rgb_sensor_data():
 				pinLed = pinLedB
 			else :
 				valueColor = 4
-				pinLed = pinLedW
+				pinLed = pinLedY
 			socketio.emit('rgb_sensor_data', valueColor)
 			led_blink(pinLed)
 		else :

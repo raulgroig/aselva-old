@@ -10,16 +10,14 @@
     <style type="text/css">
       .container{
         display: block;
-        width: 800px;
-        height: 480px;
-        background-color: #9e9e9e;
+        width: 100%;
       }
-      .ledCircle {
+      .ledCircle-container {
         display: block;
         width: 25%;
         float: left;
       }
-      .ledCircle span {
+      .ledCircle {
         display: block;
         width: 100px;
         height: 100px;
@@ -30,36 +28,32 @@
         background-color: #550000;
       }
       #greenLed {
-        background-color: #004c00;
+        background-color: #003300;
       }
       #blueLed {
         background-color: #00112B;
       }
-      #whiteLed {
-        background-color: #d2d2d2;
+      #yellowLed {
+        background-color: #c5c500;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1 id="test"></h1>
-      <div class="ledCircle">
-        <span id="redLed"></span>
+      <div class="ledCircle-container">
+        <span class="ledCircle" id="redLed"></span>
       </div>
-      <div class="ledCircle">
-        <span id="greenLed"></span>
+      <div class="ledCircle-container">
+        <span class="ledCircle" id="greenLed"></span>
       </div>
-      <div class="ledCircle">
-        <span id="blueLed"></span>
+      <div class="ledCircle-container">
+        <span class="ledCircle" id="blueLed"></span>
       </div>
-      <div class="ledCircle">
-        <span id="whiteLed"></span>
+      <div class="ledCircle-container">
+        <span class="ledCircle" id="yellowLed"></span>
       </div>
     </div>
   </body>
-
-  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script> -->
-  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script> -->
   <script src="/static/js/jquery-3.5.1.min.js"></script>
   <script src="/static/js/socket.io-3.0.4.min.js"></script>
   <script type="text/javascript" charset="utf-8">
@@ -76,7 +70,7 @@
             case 2: 
               $( "span#greenLed" ).css( "background-color", "#039e03" );
               setTimeout(function(){
-                $( "span#greenLed" ).css( "background-color", "#004c00" );
+                $( "span#greenLed" ).css( "background-color", "#003300" );
               }, 1000);
               break;
             case 3: 
@@ -86,9 +80,9 @@
               }, 1000);
               break;
             case 4: 
-              $( "span#whiteLed" ).css( "background-color", "white" );
+              $( "span#yellowLed" ).css( "background-color", "yellow" );
               setTimeout(function(){
-                $( "span#whiteLed" ).css( "background-color", "#d2d2d2" );
+                $( "span#yellowLed" ).css( "background-color", "#c5c500" );
               }, 1000);
               break;
       }
