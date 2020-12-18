@@ -42,6 +42,7 @@ $ apt-get update
 $ apt-get upgrade  
 $ apt-get install nginx  
 $ /var/www/aselva/bin/python3.9 -m pip install --upgrade pip  
+$ pip install RPi.GPIO  
 $ pip install flask  
 $ pip install flask-socketio  
 $ vim hello.py  
@@ -76,4 +77,52 @@ $ git remote add origin https://github.com/raulgroig/aselva
 $ cd ~
 $ nano /etc/ssh/sshd_config
   PermitRootLogin yes
-$ /etc/init.d/ssh restart
+$ /etc/init.d/ssh restart 
+
+# Redirect NGINX conf file
+$ rm /etc/nginx/sites-enabled/default
+$ ln -s /var/www/aselva/aselva_nginx.conf /etc/nginx/conf.d/
+$ ls -al /etc/nginx/conf.d/  
+$ /etc/init.d/nginx restart
+
+# Automate with SystemD
+$ vim /etc/systemd/system/emperor.uwsgi.service
+# paste into the file
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+ExecStart=/var/www/aselva/bin/uwsgi --ini /var/www/aselva/aselva_uwsgi.ini
+# Requires systemd version 211 or newer
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+# save and quit typing :wq 
+$ systemctl start emperor.uwsgi.service  
+$ systemctl status emperor.uwsgi.service  
+$ systemctl enable emperor.uwsgi.service  
+  
+# Install RGB Sensor library
+$ pip3 install adafruit-circuitpython-tcs34725
+$ pip3 install adafruit-circuitpython-busdevice
+
+# Install Socketio client
+$ npm i socket.io-client
+
+# Raspbian setup
+$ raspi-config  
+  Interface Options > Remote GPIO = Enable
+  Interface Options > SPI = Enable
+  Interface Options > IC2 = Enable
+# teclado
+$ sudo apt-get install matchbox-keyboard
+  
+# create file requirements.txt
+$ pip freeze > requirements.txt
