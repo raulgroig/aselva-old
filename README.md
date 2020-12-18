@@ -77,10 +77,7 @@ $ git remote add origin https://github.com/raulgroig/aselva
 $ cd ~
 $ nano /etc/ssh/sshd_config
   PermitRootLogin yes
-$ /etc/init.d/ssh restart
-
-# Init uWSGI
-$ bin/uwsgi --ini /var/www/aselva/aselva_uwsgi.ini  
+$ /etc/init.d/ssh restart 
 
 # Redirect NGINX conf file
 $ rm /etc/nginx/sites-enabled/default
@@ -113,6 +110,19 @@ $ systemctl status emperor.uwsgi.service
 $ systemctl enable emperor.uwsgi.service  
   
 # Install RGB Sensor library
-$ git clone https://github.com/adafruit/Adafruit_CircuitPython_DHT  
-$ cd Adafruit_CircuitPython_DHT  
-~/Adafruit_CircuitPython_DHT $ python3 setup.py install  
+$ pip3 install adafruit-circuitpython-tcs34725
+$ pip3 install adafruit-circuitpython-busdevice
+
+# Install Socketio client
+$ npm i socket.io-client
+
+# Raspbian setup
+$ raspi-config  
+  Interface Options > Remote GPIO = Enable
+  Interface Options > SPI = Enable
+  Interface Options > IC2 = Enable
+# teclado
+$ sudo apt-get install matchbox-keyboard
+  
+# create file requirements.txt
+$ pip freeze > requirements.txt
